@@ -1,0 +1,87 @@
+<div >
+    <div class="input-group gap-3">
+      <input
+        type="text"
+        class="form-control mx-auto my-4 rounded"
+        placeholder="Search By Customer Name"
+        [(ngModel)]="searchWord"
+      />
+
+      <input
+        type="text"
+        class="form-control mx-auto my-4 rounded"
+        placeholder="Search Transaction Amount"
+        [(ngModel)]="searchAmount"
+      />
+    </div>
+    <table
+      class="table align-middle mb-0 table-light bordered table-striped table-hover table-bordered table-dark"
+    >
+      <thead class="">
+        <tr>
+          <th class="text-center fw-bold fs-4" colspan="2">Customer</th>
+          <th class="text-center fw-bold fs-4" colspan="3">Transaction</th>
+        </tr>
+        <tr>
+          <th>Customer Id</th>
+          <th>Customer Name</th>
+          <th>Transaction Date</th>
+          <th>Transaction Amount</th>
+          <th class="ps-5">Graph</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container
+          *ngFor="let customer of customers | searchPipe : searchWord"
+        >
+          <ng-container
+            *ngFor="
+              let transaction of transactions
+                | filterByCustomerId : customer.id
+                | searchByAmount : searchAmount
+            "
+          >
+            <tr *ngIf="customer.id == transaction.customer_id">
+              <td>{{ customer.id }}</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <img
+                    [src]="
+                      'https://mdbootstrap.com/img/new/avatars/' +
+                      (customer.id + 2) +
+                      '.jpg'
+                    "
+                    alt=""
+                    style="width: 45px; height: 45px"
+                    class="rounded-circle"
+                  />
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">{{ customer.name }}</p>
+                  </div>
+                </div>
+              </td>
+              <td>{{ transaction.date }}</td>
+              <td>{{ transaction.amount }}</td>
+              <td>
+                <button
+                  (click)="selectCustomer(customer.id)"
+                  class="btn btn-info"
+                  data-mdb-ripple-init
+                  type="button"
+                  data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#graph"
+                >
+                  View 
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+<div class="w-50 mx-auto text-center">
+  <app-graph
+  *ngIf="selectedCustomerTransactions.length != 0"
+  [transactions]="selectedCustomerTransactions"
+></app-graph>
+</div>
+</div>
