@@ -12,9 +12,9 @@ export class CustomerService {
   constructor(private _HttpClient:HttpClient) { }
 
   loadCustomers() {
-    return this._HttpClient.get<Customers[]>('http://localhost:3000/customers'); 
+    return this._HttpClient.get<Customers[]>('https://customers-ivory.vercel.app/customers'); 
   }
   loadTransactions() {
-    return this._HttpClient.get<Transactions[]>('http://localhost:3000/transactions'); 
+    return this._HttpClient.get<Transactions[]>('https://customers-ivory.vercel.app/transactions'); 
   }
 }
